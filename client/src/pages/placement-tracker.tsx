@@ -159,9 +159,14 @@ export default function PlacementTracker() {
       setIsLoading(false);
       
       if (email === 'kshitijsingh066@gmail.com' && password === 'Kshitij@2004') {
-        const roleDisplayName = currentRole.charAt(0).toUpperCase() + currentRole.slice(1);
-        setSuccessMessage(`Welcome back! You are logged in as ${roleDisplayName}.`);
-        setCurrentView("success");
+        // Redirect to student dashboard after successful login
+        if (currentRole === 'student') {
+          window.location.href = '/student-dashboard';
+        } else {
+          const roleDisplayName = currentRole.charAt(0).toUpperCase() + currentRole.slice(1);
+          setSuccessMessage(`Welcome back! You are logged in as ${roleDisplayName}.`);
+          setCurrentView("success");
+        }
         setFormData({});
         setFormErrors({});
       } else {

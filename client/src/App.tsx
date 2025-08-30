@@ -4,12 +4,14 @@ import { QueryClientProvider } from "@tanstack/react-query";
 import { Toaster } from "@/components/ui/toaster";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import PlacementTracker from "@/pages/placement-tracker";
+import StudentDashboard from "@/pages/student-dashboard";
 import NotFound from "@/pages/not-found";
 
 function Router() {
   return (
     <Switch>
       <Route path="/" component={PlacementTracker} />
+      <Route path="/student-dashboard" component={StudentDashboard} />
       <Route component={NotFound} />
     </Switch>
   );
