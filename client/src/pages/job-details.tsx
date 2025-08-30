@@ -180,7 +180,12 @@ export default function JobDetails() {
               >
                 Jobs
               </Button>
-              <Button variant="ghost" className="text-primary-foreground hover:bg-primary/80" data-testid="nav-practice">
+              <Button 
+                variant="ghost" 
+                className="text-primary-foreground hover:bg-primary/80" 
+                onClick={() => window.location.href = '/practice-exam'}
+                data-testid="nav-practice"
+              >
                 Practice & Exam
               </Button>
               <Button variant="ghost" className="text-primary-foreground hover:bg-primary/80" data-testid="nav-resume">

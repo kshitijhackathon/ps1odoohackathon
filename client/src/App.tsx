@@ -8,6 +8,8 @@ import StudentDashboard from "@/pages/student-dashboard";
 import Jobs from "@/pages/jobs";
 import JobDetails from "@/pages/job-details";
 import ApplyJob from "@/pages/apply-job";
+import PracticeExam from "@/pages/practice-exam";
+import TestInterface from "@/pages/test-interface";
 import NotFound from "@/pages/not-found";
 
 function Router() {
@@ -18,6 +20,8 @@ function Router() {
       <Route path="/jobs" component={Jobs} />
       <Route path="/job-details/:id" component={JobDetails} />
       <Route path="/apply-job/:id" component={ApplyJob} />
+      <Route path="/practice-exam" component={PracticeExam} />
+      <Route path="/test/:id" component={TestInterface} />
       <Route component={NotFound} />
     </Switch>
   );
