@@ -355,6 +355,7 @@ export default function JobDetails() {
           </Button>
           <Button 
             className="px-8"
+            onClick={() => window.location.href = `/apply-job/${jobId}`}
             data-testid="button-apply-now"
           >
             Apply Now

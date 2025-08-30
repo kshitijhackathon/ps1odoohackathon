@@ -256,6 +256,7 @@ export default function Jobs() {
                   <Button 
                     size="sm" 
                     className="flex-1"
+                    onClick={() => window.location.href = `/apply-job/${job.id}`}
                     data-testid={`button-apply-${job.id}`}
                   >
                     Apply

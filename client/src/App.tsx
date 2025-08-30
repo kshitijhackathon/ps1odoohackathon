@@ -7,6 +7,7 @@ import PlacementTracker from "@/pages/placement-tracker";
 import StudentDashboard from "@/pages/student-dashboard";
 import Jobs from "@/pages/jobs";
 import JobDetails from "@/pages/job-details";
+import ApplyJob from "@/pages/apply-job";
 import NotFound from "@/pages/not-found";
 
 function Router() {
@@ -16,6 +17,7 @@ function Router() {
       <Route path="/student-dashboard" component={StudentDashboard} />
       <Route path="/jobs" component={Jobs} />
       <Route path="/job-details/:id" component={JobDetails} />
+      <Route path="/apply-job/:id" component={ApplyJob} />
       <Route component={NotFound} />
     </Switch>
   );

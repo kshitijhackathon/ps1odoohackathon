@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Avatar, AvatarFallback } from "@/components/ui/avatar";
@@ -9,6 +9,16 @@ export default function StudentDashboard() {
     name: "John Doe",
     role: "Student"
   });
+
+  const [appliedJobsCount, setAppliedJobsCount] = useState(5);
+
+  useEffect(() => {
+    // Get applied jobs count from localStorage
+    const savedCount = localStorage.getItem('appliedJobsCount');
+    if (savedCount) {
+      setAppliedJobsCount(parseInt(savedCount, 10));
+    }
+  }, []);
 
   const handleLogout = () => {
     window.location.href = "/";
@@ -89,7 +99,7 @@ export default function StudentDashboard() {
             </CardHeader>
             <CardContent className="text-center">
               <div className="text-4xl font-bold text-foreground mb-2" data-testid="applied-jobs-count">
-                5
+                {appliedJobsCount}
               </div>
             </CardContent>
           </Card>
