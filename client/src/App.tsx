@@ -10,6 +10,7 @@ import JobDetails from "@/pages/job-details";
 import ApplyJob from "@/pages/apply-job";
 import PracticeExam from "@/pages/practice-exam";
 import TestInterface from "@/pages/test-interface";
+import Leaderboard from "@/pages/leaderboard";
 import NotFound from "@/pages/not-found";
 
 function Router() {
@@ -22,6 +23,7 @@ function Router() {
       <Route path="/apply-job/:id" component={ApplyJob} />
       <Route path="/practice-exam" component={PracticeExam} />
       <Route path="/test/:id" component={TestInterface} />
+      <Route path="/leaderboard" component={Leaderboard} />
       <Route component={NotFound} />
     </Switch>
   );

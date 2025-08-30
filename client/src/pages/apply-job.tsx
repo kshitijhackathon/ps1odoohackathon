@@ -218,7 +218,12 @@ export default function ApplyJob() {
               <Button variant="ghost" className="text-primary-foreground hover:bg-primary/80" data-testid="nav-resume">
                 Resume builder
               </Button>
-              <Button variant="ghost" className="text-primary-foreground hover:bg-primary/80" data-testid="nav-leaderboard">
+              <Button 
+                variant="ghost" 
+                className="text-primary-foreground hover:bg-primary/80" 
+                onClick={() => window.location.href = '/leaderboard'}
+                data-testid="nav-leaderboard"
+              >
                 Leader-board
               </Button>
               <Button variant="ghost" className="text-primary-foreground hover:bg-primary/80" data-testid="nav-history">
