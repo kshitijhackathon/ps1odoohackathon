@@ -162,7 +162,12 @@ export default function Jobs() {
               >
                 Leader-board
               </Button>
-              <Button variant="ghost" className="text-primary-foreground hover:bg-primary/80" data-testid="nav-history">
+              <Button 
+                variant="ghost" 
+                className="text-primary-foreground hover:bg-primary/80" 
+                onClick={() => window.location.href = '/history'}
+                data-testid="nav-history"
+              >
                 History
               </Button>
             </div>
