@@ -22,10 +22,15 @@ export default function StudentDashboard() {
           <div className="flex items-center space-x-6">
             <h1 className="text-xl font-bold" data-testid="nav-title">🏠 Placement Tracker Portal</h1>
             <div className="flex space-x-4">
-              <Button variant="ghost" className="text-primary-foreground hover:bg-primary/80" data-testid="nav-dashboard">
+              <Button variant="ghost" className="text-primary-foreground hover:bg-primary/80 bg-primary/20" data-testid="nav-dashboard">
                 Dashboard
               </Button>
-              <Button variant="ghost" className="text-primary-foreground hover:bg-primary/80" data-testid="nav-jobs">
+              <Button 
+                variant="ghost" 
+                className="text-primary-foreground hover:bg-primary/80" 
+                onClick={() => window.location.href = '/jobs'}
+                data-testid="nav-jobs"
+              >
                 Jobs
               </Button>
               <Button variant="ghost" className="text-primary-foreground hover:bg-primary/80" data-testid="nav-practice">
