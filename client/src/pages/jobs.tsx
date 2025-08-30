@@ -37,50 +37,50 @@ export default function Jobs() {
     {
       id: "1",
       title: "Software Engineer",
-      company: "Company 1",
-      location: "Bangalore",
-      package: "6-8 LPA",
-      eligibility: "Any B.Tech CGPA: CS/IT"
+      company: "InnovateX",
+      location: "Hyderabad",
+      package: "12 LPA",
+      eligibility: "CS/IT, CGPA 6.5+"
     },
     {
       id: "2",
-      title: "Software Engineer",
-      company: "Company 2",
-      location: "Bangalore",
-      package: "6-8 LPA",
-      eligibility: "Any B.Tech CGPA: CS/IT"
+      title: "Data Analyst",
+      company: "DataWiz",
+      location: "Pune",
+      package: "8 LPA",
+      eligibility: "CS/IT/Math/Stats, CGPA 7+"
     },
     {
       id: "3",
-      title: "Software Engineer",
-      company: "Company 3",
+      title: "Frontend Developer",
+      company: "PixelSoft",
       location: "Bangalore",
-      package: "6-8 LPA",
-      eligibility: "Any B.Tech CGPA: CS/IT"
+      package: "9 LPA",
+      eligibility: "CS/IT, CGPA 6+"
     },
     {
       id: "4",
-      title: "Software Engineer",
-      company: "Company 4",
-      location: "Bangalore",
-      package: "6-8 LPA",
-      eligibility: "Any B.Tech CGPA: CS/IT"
+      title: "Cloud Engineer",
+      company: "SkyNet Solutions",
+      location: "Chennai",
+      package: "11 LPA",
+      eligibility: "CS/IT/ECE, CGPA 7+"
     },
     {
       id: "5",
-      title: "Software Engineer",
-      company: "Company 5",
-      location: "Bangalore",
-      package: "6-8 LPA",
-      eligibility: "Any B.Tech CGPA: CS/IT"
+      title: "Cybersecurity Analyst",
+      company: "SecureNet",
+      location: "Noida",
+      package: "10 LPA",
+      eligibility: "CS/IT, CGPA 6.5+"
     },
     {
       id: "6",
-      title: "Software Engineer",
-      company: "Company 6",
-      location: "Bangalore",
-      package: "6-8 LPA",
-      eligibility: "Any B.Tech CGPA: CS/IT"
+      title: "AI/ML Engineer",
+      company: "BrainTech",
+      location: "Gurgaon",
+      package: "15 LPA",
+      eligibility: "CS/IT/AI/DS, CGPA 7.5+"
     }
   ];
 
@@ -264,6 +264,7 @@ export default function Jobs() {
                     size="sm" 
                     variant="outline" 
                     className="flex-1"
+                    onClick={() => window.location.href = `/job-details/${job.id}`}
                     data-testid={`button-view-details-${job.id}`}
                   >
                     View Details

@@ -6,6 +6,7 @@ import { TooltipProvider } from "@/components/ui/tooltip";
 import PlacementTracker from "@/pages/placement-tracker";
 import StudentDashboard from "@/pages/student-dashboard";
 import Jobs from "@/pages/jobs";
+import JobDetails from "@/pages/job-details";
 import NotFound from "@/pages/not-found";
 
 function Router() {
@@ -14,6 +15,7 @@ function Router() {
       <Route path="/" component={PlacementTracker} />
       <Route path="/student-dashboard" component={StudentDashboard} />
       <Route path="/jobs" component={Jobs} />
+      <Route path="/job-details/:id" component={JobDetails} />
       <Route component={NotFound} />
     </Switch>
   );
