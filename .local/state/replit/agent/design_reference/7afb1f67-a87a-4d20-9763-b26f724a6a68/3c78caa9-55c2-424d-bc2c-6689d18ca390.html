@@ -1,0 +1,606 @@
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Placement Tracker - Account Management</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+    tailwind.config = {
+        theme: {
+            extend: {
+                borderRadius: {
+                    lg: "var(--radius)",
+                    md: "calc(var(--radius) - 2px)",
+                    sm: "calc(var(--radius) - 4px)",
+                },
+                colors: {
+                    background: "var(--background)",
+                    foreground: "var(--foreground)",
+                    card: {
+                        DEFAULT: "var(--card)",
+                        foreground: "var(--card-foreground)",
+                    },
+                    popover: {
+                        DEFAULT: "var(--popover)",
+                        foreground: "var(--popover-foreground)",
+                    },
+                    primary: {
+                        DEFAULT: "var(--primary)",
+                        foreground: "var(--primary-foreground)",
+                    },
+                    secondary: {
+                        DEFAULT: "var(--secondary)",
+                        foreground: "var(--secondary-foreground)",
+                    },
+                    muted: {
+                        DEFAULT: "var(--muted)",
+                        foreground: "var(--muted-foreground)",
+                    },
+                    accent: {
+                        DEFAULT: "var(--accent)",
+                        foreground: "var(--accent-foreground)",
+                    },
+                    destructive: {
+                        DEFAULT: "var(--destructive)",
+                        foreground: "var(--destructive-foreground)",
+                    },
+                    border: "var(--border)",
+                    input: "var(--input)",
+                    ring: "var(--ring)",
+                },
+                fontFamily: {
+                    sans: ["Inter", "system-ui", "sans-serif"],
+                }
+            },
+        }
+    };
+    </script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --background: hsl(0 0% 100%);
+            --foreground: hsl(222.2 84% 4.9%);
+            --card: hsl(0 0% 100%);
+            --card-foreground: hsl(222.2 84% 4.9%);
+            --popover: hsl(0 0% 100%);
+            --popover-foreground: hsl(222.2 84% 4.9%);
+            --primary: hsl(221.2 83.2% 53.3%);
+            --primary-foreground: hsl(210 40% 98%);
+            --secondary: hsl(210 40% 96%);
+            --secondary-foreground: hsl(222.2 84% 4.9%);
+            --muted: hsl(210 40% 96%);
+            --muted-foreground: hsl(215.4 16.3% 46.9%);
+            --accent: hsl(210 40% 96%);
+            --accent-foreground: hsl(222.2 84% 4.9%);
+            --destructive: hsl(0 84.2% 60.2%);
+            --destructive-foreground: hsl(210 40% 98%);
+            --border: hsl(214.3 31.8% 91.4%);
+            --input: hsl(214.3 31.8% 91.4%);
+            --ring: hsl(221.2 83.2% 53.3%);
+            --radius: 0.75rem;
+        }
+        
+        .loading-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(255, 255, 255, 0.9);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 1000;
+            opacity: 0;
+            visibility: hidden;
+            transition: all 0.3s ease;
+        }
+        
+        .loading-overlay.active {
+            opacity: 1;
+            visibility: visible;
+        }
+        
+        .spinner {
+            width: 40px;
+            height: 40px;
+            border: 3px solid #e5e7eb;
+            border-top: 3px solid hsl(221.2 83.2% 53.3%);
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+        }
+        
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+        
+        .form-container {
+            transition: all 0.3s ease-in-out;
+        }
+        
+        .error-message {
+            color: hsl(0 84.2% 60.2%);
+            font-size: 0.875rem;
+            margin-top: 0.25rem;
+        }
+        
+        .success-message {
+            color: hsl(142.1 76.2% 36.3%);
+            font-size: 0.875rem;
+            margin-top: 0.25rem;
+        }
+    </style>
+</head>
+<body class="bg-background font-sans">
+    <!-- Loading Overlay -->
+    <div class="loading-overlay" id="loadingOverlay">
+        <div class="text-center">
+            <div class="spinner mx-auto mb-4"></div>
+            <p class="text-muted-foreground">Please wait...</p>
+        </div>
+    </div>
+
+    <div class="min-h-screen flex items-center justify-center p-4 bg-gradient-to-br from-blue-50 to-indigo-100">
+        <div class="w-full max-w-md">
+            <!-- Landing Page / Role Selection -->
+            <!-- @COMPONENT: LandingPage -->
+            <div id="landingPage" class="form-container bg-card rounded-lg shadow-lg border border-border p-8">
+                <div class="text-center mb-8">
+                    <h1 class="text-3xl font-bold text-foreground mb-2">Placement Tracker</h1>
+                    <p class="text-muted-foreground">Choose your role to get started</p>
+                </div>
+                
+                <div class="space-y-4">
+                    <button 
+                        onclick="showRegistration('student')" 
+                        class="w-full bg-primary text-primary-foreground py-4 px-6 rounded-lg font-medium hover:bg-primary/90 transition-colors duration-200 text-lg"
+                        data-event="click:showRegistration">
+                        Register as Student
+                    </button>
+                    <button 
+                        onclick="showRegistration('company')" 
+                        class="w-full bg-secondary text-secondary-foreground py-4 px-6 rounded-lg font-medium hover:bg-secondary/80 transition-colors duration-200 text-lg border border-border"
+                        data-event="click:showRegistration">
+                        Register as Company
+                    </button>
+                    <button 
+                        onclick="showRegistration('tpo')" 
+                        class="w-full bg-accent text-accent-foreground py-4 px-6 rounded-lg font-medium hover:bg-accent/80 transition-colors duration-200 text-lg border border-border"
+                        data-event="click:showRegistration">
+                        Register as TPO
+                    </button>
+                </div>
+                
+                <div class="mt-8 text-center">
+                    <p class="text-muted-foreground">Already have an account?</p>
+                    <button onclick="showLogin()" class="text-primary font-medium hover:underline mt-1" data-event="click:showLogin">
+                        Login here
+                    </button>
+                </div>
+            </div>
+            <!-- @END_COMPONENT: LandingPage -->
+
+            <!-- Registration Forms -->
+            <!-- @COMPONENT: RegistrationForm [role-based dynamic form] -->
+            <div id="registrationForm" class="form-container bg-card rounded-lg shadow-lg border border-border p-8 hidden">
+                <div class="text-center mb-6">
+                    <h2 class="text-2xl font-bold text-foreground mb-2">Create Your Account</h2>
+                    <p class="text-muted-foreground" id="roleDescription">Fill in the details below</p>
+                </div>
+
+                <form id="regForm" data-implementation="Form validation and submission logic">
+                    <!-- Role Selection -->
+                    <div class="mb-6">
+                        <label class="block text-sm font-medium text-foreground mb-3">Select Role</label>
+                        <div class="flex space-x-6">
+                            <label class="flex items-center">
+                                <input type="radio" name="role" value="student" class="mr-2 text-primary focus:ring-primary" data-event="change:updateRole">
+                                <span class="text-sm text-foreground">Student</span>
+                            </label>
+                            <label class="flex items-center">
+                                <input type="radio" name="role" value="company" class="mr-2 text-primary focus:ring-primary" data-event="change:updateRole">
+                                <span class="text-sm text-foreground">Company</span>
+                            </label>
+                            <label class="flex items-center">
+                                <input type="radio" name="role" value="tpo" class="mr-2 text-primary focus:ring-primary" data-event="change:updateRole">
+                                <span class="text-sm text-foreground">TPO</span>
+                            </label>
+                        </div>
+                    </div>
+
+                    <!-- Dynamic Form Fields -->
+                    <div id="formFields" class="space-y-4">
+                        <!-- Fields will be populated dynamically -->
+                    </div>
+
+                    <button type="submit" class="w-full bg-primary text-primary-foreground py-3 px-4 rounded-lg font-medium hover:bg-primary/90 transition-colors duration-200 mt-6"
+                            data-event="click:handleRegistration">
+                        Create Account
+                    </button>
+                </form>
+
+                <div class="mt-6 text-center">
+                    <p class="text-muted-foreground">Already have an account?</p>
+                    <button onclick="showLogin()" class="text-primary font-medium hover:underline mt-1" data-event="click:showLogin">
+                        Login here
+                    </button>
+                </div>
+
+                <button onclick="showLanding()" class="mt-4 text-muted-foreground hover:text-foreground transition-colors" data-event="click:showLanding">
+                    ← Back to role selection
+                </button>
+            </div>
+            <!-- @END_COMPONENT: RegistrationForm -->
+
+            <!-- Login Form -->
+            <!-- @COMPONENT: LoginForm [role-based login] -->
+            <div id="loginForm" class="form-container bg-card rounded-lg shadow-lg border border-border p-8 hidden">
+                <div class="text-center mb-6">
+                    <h2 class="text-2xl font-bold text-foreground mb-2">Login to Placement Tracker</h2>
+                    <p class="text-muted-foreground">Welcome back! Please sign in to continue</p>
+                </div>
+
+                <form id="loginFormElement" data-implementation="Login authentication logic">
+                    <!-- Role Selection -->
+                    <div class="mb-6">
+                        <label class="block text-sm font-medium text-foreground mb-3">Select Role</label>
+                        <div class="flex space-x-6">
+                            <label class="flex items-center">
+                                <input type="radio" name="loginRole" value="student" checked class="mr-2 text-primary focus:ring-primary">
+                                <span class="text-sm text-foreground">Student</span>
+                            </label>
+                            <label class="flex items-center">
+                                <input type="radio" name="loginRole" value="company" class="mr-2 text-primary focus:ring-primary">
+                                <span class="text-sm text-foreground">Company</span>
+                            </label>
+                            <label class="flex items-center">
+                                <input type="radio" name="loginRole" value="tpo" class="mr-2 text-primary focus:ring-primary">
+                                <span class="text-sm text-foreground">TPO</span>
+                            </label>
+                        </div>
+                    </div>
+
+                    <!-- Email Field -->
+                    <div class="mb-4">
+                        <label class="block text-sm font-medium text-foreground mb-2">Email</label>
+                        <input 
+                            type="email" 
+                            id="loginEmail"
+                            placeholder="Enter email" 
+                            class="w-full px-3 py-2 bg-background border border-input rounded-lg focus:outline-none focus:ring-2 focus:ring-ring focus:border-transparent"
+                            data-bind="loginForm.email"
+                            required>
+                        <div id="loginEmailError" class="error-message hidden"></div>
+                    </div>
+
+                    <!-- Password Field -->
+                    <div class="mb-6">
+                        <label class="block text-sm font-medium text-foreground mb-2">Password</label>
+                        <input 
+                            type="password" 
+                            id="loginPassword"
+                            placeholder="Enter password" 
+                            class="w-full px-3 py-2 bg-background border border-input rounded-lg focus:outline-none focus:ring-2 focus:ring-ring focus:border-transparent"
+                            data-bind="loginForm.password"
+                            required>
+                        <div id="loginPasswordError" class="error-message hidden"></div>
+                    </div>
+
+                    <button type="submit" class="w-full bg-primary text-primary-foreground py-3 px-4 rounded-lg font-medium hover:bg-primary/90 transition-colors duration-200"
+                            data-event="click:handleLogin">
+                        Login
+                    </button>
+                </form>
+
+                <div class="mt-6 text-center">
+                    <p class="text-muted-foreground">Don't have an account?</p>
+                    <button onclick="showLanding()" class="text-primary font-medium hover:underline mt-1" data-event="click:showLanding">
+                        Sign up
+                    </button>
+                </div>
+            </div>
+            <!-- @END_COMPONENT: LoginForm -->
+
+            <!-- Success Page -->
+            <!-- @COMPONENT: SuccessPage -->
+            <div id="successPage" class="form-container bg-card rounded-lg shadow-lg border border-border p-8 hidden">
+                <div class="text-center">
+                    <div class="w-16 h-16 bg-green-100 rounded-full flex items-center justify-center mx-auto mb-4">
+                        <svg class="w-8 h-8 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
+                        </svg>
+                    </div>
+                    <h2 class="text-2xl font-bold text-foreground mb-2">Welcome!</h2>
+                    <p class="text-muted-foreground mb-6" id="successMessage">You have successfully logged in.</p>
+                    <button onclick="showLanding()" class="bg-primary text-primary-foreground py-2 px-6 rounded-lg font-medium hover:bg-primary/90 transition-colors" data-event="click:showLanding">
+                        Go Back
+                    </button>
+                </div>
+            </div>
+            <!-- @END_COMPONENT: SuccessPage -->
+        </div>
+    </div>
+
+    <script>
+        // Application State
+        <!-- @STATE: currentView:string = 'landing' -->
+        <!-- @STATE: currentRole:string = null -->
+        <!-- @STATE: isLoading:boolean = false -->
+        
+        const AppState = {
+            currentView: 'landing',
+            currentRole: null,
+            isLoading: false
+        };
+
+        // Form field configurations for each role
+        const roleConfigs = {
+            student: {
+                description: "Student Registration",
+                fields: [
+                    { name: 'name', label: 'Name', type: 'text', placeholder: 'Enter full name', required: true },
+                    { name: 'email', label: 'Email', type: 'email', placeholder: 'Enter email', required: true },
+                    { name: 'password', label: 'Password', type: 'password', placeholder: 'Enter password', required: true },
+                    { name: 'confirmPassword', label: 'Confirm Password', type: 'password', placeholder: 'Enter password', required: true },
+                    { name: 'rollNumber', label: 'Roll Number', type: 'text', placeholder: 'Enter roll number', required: true },
+                    { name: 'branch', label: 'Branch', type: 'text', placeholder: 'Enter branch', required: true },
+                    { name: 'graduationYear', label: 'Graduation Year', type: 'text', placeholder: 'Enter graduation year', required: true }
+                ]
+            },
+            company: {
+                description: "Company Registration",
+                fields: [
+                    { name: 'name', label: 'Name', type: 'text', placeholder: 'Enter full name', required: true },
+                    { name: 'email', label: 'Email', type: 'email', placeholder: 'Enter email', required: true },
+                    { name: 'password', label: 'Password', type: 'password', placeholder: 'Enter password', required: true },
+                    { name: 'confirmPassword', label: 'Confirm Password', type: 'password', placeholder: 'Enter password', required: true },
+                    { name: 'hrContact', label: 'HR Contact Person', type: 'text', placeholder: 'HR Contact Person', required: true },
+                    { name: 'contactNumber', label: 'Contact Number', type: 'tel', placeholder: 'Enter Contact Number', required: true }
+                ]
+            },
+            tpo: {
+                description: "TPO Registration",
+                fields: [
+                    { name: 'name', label: 'Name', type: 'text', placeholder: 'Enter full name', required: true },
+                    { name: 'email', label: 'Email', type: 'email', placeholder: 'Enter email', required: true },
+                    { name: 'password', label: 'Password', type: 'password', placeholder: 'Enter password', required: true },
+                    { name: 'confirmPassword', label: 'Confirm Password', type: 'password', placeholder: 'Enter password', required: true },
+                    { name: 'instituteName', label: 'Institute Name', type: 'text', placeholder: 'Enter Institute Name', required: true },
+                    { name: 'contactNumber', label: 'Contact Number', type: 'tel', placeholder: 'Enter Contact Number', required: true }
+                ]
+            }
+        };
+
+        // Utility Functions
+        function showLoading() {
+            AppState.isLoading = true;
+            document.getElementById('loadingOverlay').classList.add('active');
+        }
+
+        function hideLoading() {
+            AppState.isLoading = false;
+            document.getElementById('loadingOverlay').classList.remove('active');
+        }
+
+        function hideAllForms() {
+            document.getElementById('landingPage').classList.add('hidden');
+            document.getElementById('registrationForm').classList.add('hidden');
+            document.getElementById('loginForm').classList.add('hidden');
+            document.getElementById('successPage').classList.add('hidden');
+        }
+
+        function showLanding() {
+            AppState.currentView = 'landing';
+            hideAllForms();
+            document.getElementById('landingPage').classList.remove('hidden');
+        }
+
+        function showRegistration(role) {
+            AppState.currentView = 'registration';
+            AppState.currentRole = role;
+            
+            hideAllForms();
+            
+            // Update form content
+            updateRegistrationForm(role);
+            
+            document.getElementById('registrationForm').classList.remove('hidden');
+        }
+
+        function showLogin() {
+            AppState.currentView = 'login';
+            hideAllForms();
+            document.getElementById('loginForm').classList.remove('hidden');
+        }
+
+        function showSuccess(message) {
+            AppState.currentView = 'success';
+            hideAllForms();
+            document.getElementById('successMessage').textContent = message;
+            document.getElementById('successPage').classList.remove('hidden');
+        }
+
+        function updateRegistrationForm(role) {
+            const config = roleConfigs[role];
+            const formFields = document.getElementById('formFields');
+            const roleDescription = document.getElementById('roleDescription');
+            
+            // Update description
+            roleDescription.textContent = config.description;
+            
+            // Update role radio buttons
+            const roleRadios = document.querySelectorAll('input[name="role"]');
+            roleRadios.forEach(radio => {
+                radio.checked = radio.value === role;
+            });
+            
+            // Generate form fields
+            formFields.innerHTML = config.fields.map(field => `
+                <div class="mb-4">
+                    <label class="block text-sm font-medium text-foreground mb-2">${field.label}</label>
+                    <input 
+                        type="${field.type}" 
+                        name="${field.name}"
+                        id="${field.name}"
+                        placeholder="${field.placeholder}" 
+                        class="w-full px-3 py-2 bg-background border border-input rounded-lg focus:outline-none focus:ring-2 focus:ring-ring focus:border-transparent"
+                        ${field.required ? 'required' : ''}
+                        data-bind="registrationForm.${field.name}">
+                    <div id="${field.name}Error" class="error-message hidden"></div>
+                </div>
+            `).join('');
+        }
+
+        // Form Validation
+        function validateEmail(email) {
+            const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+            return emailRegex.test(email);
+        }
+
+        function validatePassword(password) {
+            return password.length >= 6;
+        }
+
+        function validateForm(formData, role) {
+            const errors = {};
+            const config = roleConfigs[role];
+            
+            config.fields.forEach(field => {
+                const value = formData[field.name];
+                
+                if (field.required && (!value || value.trim() === '')) {
+                    errors[field.name] = `${field.label} is required`;
+                }
+                
+                if (field.name === 'email' && value && !validateEmail(value)) {
+                    errors[field.name] = 'Please enter a valid email address';
+                }
+                
+                if (field.name === 'password' && value && !validatePassword(value)) {
+                    errors[field.name] = 'Password must be at least 6 characters long';
+                }
+                
+                if (field.name === 'confirmPassword' && value && value !== formData.password) {
+                    errors[field.name] = 'Passwords do not match';
+                }
+            });
+            
+            return errors;
+        }
+
+        function displayFormErrors(errors) {
+            // Clear previous errors
+            document.querySelectorAll('.error-message').forEach(el => {
+                el.classList.add('hidden');
+                el.textContent = '';
+            });
+            
+            // Display new errors
+            Object.keys(errors).forEach(fieldName => {
+                const errorElement = document.getElementById(`${fieldName}Error`);
+                if (errorElement) {
+                    errorElement.textContent = errors[fieldName];
+                    errorElement.classList.remove('hidden');
+                }
+            });
+        }
+
+        // Event Handlers
+        document.getElementById('regForm').addEventListener('submit', async function(e) {
+            e.preventDefault();
+            
+            const formData = new FormData(e.target);
+            const data = Object.fromEntries(formData);
+            const role = document.querySelector('input[name="role"]:checked')?.value;
+            
+            if (!role) {
+                alert('Please select a role');
+                return;
+            }
+            
+            const errors = validateForm(data, role);
+            
+            if (Object.keys(errors).length > 0) {
+                displayFormErrors(errors);
+                return;
+            }
+            
+            showLoading();
+            
+            // Simulate API call
+            setTimeout(() => {
+                hideLoading();
+                showSuccess(`${role.charAt(0).toUpperCase() + role.slice(1)} account created successfully!`);
+                // TODO: Implement actual registration API call
+            }, 2000);
+        });
+
+        document.getElementById('loginFormElement').addEventListener('submit', async function(e) {
+            e.preventDefault();
+            
+            const email = document.getElementById('loginEmail').value;
+            const password = document.getElementById('loginPassword').value;
+            const role = document.querySelector('input[name="loginRole"]:checked')?.value;
+            
+            // Clear previous errors
+            document.getElementById('loginEmailError').classList.add('hidden');
+            document.getElementById('loginPasswordError').classList.add('hidden');
+            
+            let hasErrors = false;
+            
+            if (!email) {
+                document.getElementById('loginEmailError').textContent = 'Email is required';
+                document.getElementById('loginEmailError').classList.remove('hidden');
+                hasErrors = true;
+            } else if (!validateEmail(email)) {
+                document.getElementById('loginEmailError').textContent = 'Please enter a valid email address';
+                document.getElementById('loginEmailError').classList.remove('hidden');
+                hasErrors = true;
+            }
+            
+            if (!password) {
+                document.getElementById('loginPasswordError').textContent = 'Password is required';
+                document.getElementById('loginPasswordError').classList.remove('hidden');
+                hasErrors = true;
+            }
+            
+            if (hasErrors) return;
+            
+            showLoading();
+            
+            // Simulate API call with hardcoded credentials
+            setTimeout(() => {
+                hideLoading();
+                
+                // Hardcoded authentication check
+                if (email === 'kshitijsingh066@gmail.com' && password === 'Kshitij@2004') {
+                    showSuccess(`Welcome back! You are logged in as ${role}.`);
+                } else {
+                    document.getElementById('loginEmailError').textContent = 'Invalid email or password';
+                    document.getElementById('loginEmailError').classList.remove('hidden');
+                }
+                // TODO: Implement actual login API call
+            }, 1500);
+        });
+
+        // Role change handlers for registration form
+        document.addEventListener('change', function(e) {
+            if (e.target.name === 'role') {
+                updateRegistrationForm(e.target.value);
+                AppState.currentRole = e.target.value;
+            }
+        });
+
+        // Initialize app
+        document.addEventListener('DOMContentLoaded', function() {
+            showLanding();
+        });
+
+        // Responsive behavior and additional UI enhancements
+        window.addEventListener('resize', function() {
+            // TODO: Handle responsive layout adjustments if needed
+        });
+    </script>
+</body>
+</html>
