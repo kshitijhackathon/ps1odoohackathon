@@ -119,7 +119,12 @@ export default function PracticeExam() {
               <Button variant="ghost" className="text-primary-foreground hover:bg-primary/80 bg-primary/20" data-testid="nav-practice">
                 Practice & Exam
               </Button>
-              <Button variant="ghost" className="text-primary-foreground hover:bg-primary/80" data-testid="nav-resume">
+              <Button 
+                variant="ghost" 
+                className="text-primary-foreground hover:bg-primary/80" 
+                onClick={() => window.location.href = '/resume-builder'}
+                data-testid="nav-resume"
+              >
                 Resume builder
               </Button>
               <Button 

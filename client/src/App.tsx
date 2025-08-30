@@ -12,6 +12,7 @@ import PracticeExam from "@/pages/practice-exam";
 import TestInterface from "@/pages/test-interface";
 import Leaderboard from "@/pages/leaderboard";
 import History from "@/pages/history";
+import ResumeBuilder from "@/pages/resume-builder";
 import NotFound from "@/pages/not-found";
 
 function Router() {
@@ -26,6 +27,7 @@ function Router() {
       <Route path="/test/:id" component={TestInterface} />
       <Route path="/leaderboard" component={Leaderboard} />
       <Route path="/history" component={History} />
+      <Route path="/resume-builder" component={ResumeBuilder} />
       <Route component={NotFound} />
     </Switch>
   );

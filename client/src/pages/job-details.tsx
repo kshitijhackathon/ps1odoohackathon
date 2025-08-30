@@ -188,7 +188,12 @@ export default function JobDetails() {
               >
                 Practice & Exam
               </Button>
-              <Button variant="ghost" className="text-primary-foreground hover:bg-primary/80" data-testid="nav-resume">
+              <Button 
+                variant="ghost" 
+                className="text-primary-foreground hover:bg-primary/80" 
+                onClick={() => window.location.href = '/resume-builder'}
+                data-testid="nav-resume"
+              >
                 Resume builder
               </Button>
               <Button 
